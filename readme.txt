@@ -54,6 +54,9 @@ Add this to your functions.php:
 
 == Changelog ==
 
+= 0.0.3 =
+- fix 2 for wp_kses
+
 = 0.0.2 =
 - fix for wp_kses
 
@@ -62,6 +65,9 @@ Add this to your functions.php:
 - verified compatibility with WP 3.9
 
 == Upgrade Notice ==
+
+= 0.0.3 =
+- fix 2 for wp_kses
 
 = 0.0.2 =
 - fix for wp_kses
