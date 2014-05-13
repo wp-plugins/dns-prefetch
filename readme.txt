@@ -54,6 +54,10 @@ Add this to your functions.php:
 
 == Changelog ==
 
+= 0.0.4 = 
+- minor code optimizations
+- changed load behavior thanks to http://wordpress.org/support/topic/load-using-wp_head-with-highest-priority
+
 = 0.0.3 =
 - fix 2 for wp_kses
 
@@ -65,6 +69,9 @@ Add this to your functions.php:
 - verified compatibility with WP 3.9
 
 == Upgrade Notice ==
+
+= 0.0.4 = 
+- minor code optimizations, changed load behavior
 
 = 0.0.3 =
 - fix 2 for wp_kses
