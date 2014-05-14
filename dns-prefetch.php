@@ -3,7 +3,7 @@
 Plugin Name: DNS Prefetch
 Plugin URI: http://www.jimmyscode.com/wordpress/dns-prefetch/
 Description: Add DNS prefetching meta tags to your site.
-Version: 0.0.4
+Version: 0.0.5
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	define('DPF_PLUGIN_NAME', 'DNS Prefetch');
 	// plugin constants
-	define('DPF_VERSION', '0.0.4');
+	define('DPF_VERSION', '0.0.5');
 	define('DPF_SLUG', 'dns-prefetch');
 	define('DPF_LOCAL', 'dpf');
 	define('DPF_OPTION', 'dpf');
@@ -46,7 +46,7 @@ License: GPLv2 or later
 	// validation function
 	function dpf_validation($input) {
 		// sanitize textarea
-		$input[DPF_DEFAULT_TEXT_NAME] = wp_kses_data($input[DPF_DEFAULT_TEXT_NAME]);
+		$input[DPF_DEFAULT_TEXT_NAME] = wp_kses_post($input[DPF_DEFAULT_TEXT_NAME]);
 		return $input;
 	} 
 

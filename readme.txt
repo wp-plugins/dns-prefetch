@@ -54,6 +54,9 @@ Add this to your functions.php:
 
 == Changelog ==
 
+= 0.0.5 = 
+- code fix
+
 = 0.0.4 = 
 - minor code optimizations
 - changed load behavior thanks to http://wordpress.org/support/topic/load-using-wp_head-with-highest-priority
@@ -69,6 +72,9 @@ Add this to your functions.php:
 - verified compatibility with WP 3.9
 
 == Upgrade Notice ==
+
+= 0.0.5 = 
+- code fix
 
 = 0.0.4 = 
 - minor code optimizations, changed load behavior
