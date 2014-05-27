@@ -56,6 +56,7 @@ Add this to your functions.php:
 
 = 0.0.5 = 
 - code fix
+- updated support tab
 
 = 0.0.4 = 
 - minor code optimizations
@@ -74,7 +75,7 @@ Add this to your functions.php:
 == Upgrade Notice ==
 
 = 0.0.5 = 
-- code fix
+- code fix; updated support tab
 
 = 0.0.4 = 
 - minor code optimizations, changed load behavior
