@@ -3,7 +3,7 @@
 Plugin Name: DNS Prefetch
 Plugin URI: http://www.jimmyscode.com/wordpress/dns-prefetch/
 Description: Add DNS prefetching meta tags to your site.
-Version: 0.0.5
+Version: 0.0.6
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	define('DPF_PLUGIN_NAME', 'DNS Prefetch');
 	// plugin constants
-	define('DPF_VERSION', '0.0.5');
+	define('DPF_VERSION', '0.0.6');
 	define('DPF_SLUG', 'dns-prefetch');
 	define('DPF_LOCAL', 'dpf');
 	define('DPF_OPTION', 'dpf');
@@ -46,7 +46,9 @@ License: GPLv2 or later
 	// validation function
 	function dpf_validation($input) {
 		// sanitize textarea
-		$input[DPF_DEFAULT_TEXT_NAME] = wp_kses_post($input[DPF_DEFAULT_TEXT_NAME]);
+		if (!empty($input)) {
+			$input[DPF_DEFAULT_TEXT_NAME] = wp_kses_post($input[DPF_DEFAULT_TEXT_NAME]);
+		}
 		return $input;
 	} 
 
@@ -68,7 +70,7 @@ License: GPLv2 or later
 			<div><?php _e('You are running plugin version', dpf_get_local()); ?> <strong><?php echo DPF_VERSION; ?></strong>.</div>
 
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
-			<?php $active_tab = (isset($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
+			<?php $active_tab = (!empty($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
 			<h2 class="nav-tab-wrapper">
 			  <a href="?page=<?php echo dpf_get_slug(); ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', dpf_get_local()); ?></a>
 				<a href="?page=<?php echo dpf_get_slug(); ?>&tab=support" class="nav-tab <?php echo $active_tab == 'support' ? 'nav-tab-active' : ''; ?>"><?php _e('Support', dpf_get_local()); ?></a>
@@ -106,7 +108,12 @@ License: GPLv2 or later
 	add_action('wp_head', 'dpf_prefetch', 1);
 	function dpf_prefetch() {
 		$options = dpf_getpluginoptions();
-		$enabled = (bool)$options[DPF_DEFAULT_ENABLED_NAME];
+		if (!empty($options)) {
+			$enabled = (bool)$options[DPF_DEFAULT_ENABLED_NAME];
+		} else {
+			$enabled = DPF_DEFAULT_ENABLED;
+		}
+		$result = '';
 		
 		if ($enabled) {
 			// https://developer.mozilla.org/en-US/docs/Controlling_DNS_prefetching
@@ -130,12 +137,14 @@ License: GPLv2 or later
 		global $pagenow;
 		if (current_user_can(DPF_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if ($_GET['page'] == dpf_get_slug()) { // we are on this plugin's settings page
-					$options = dpf_getpluginoptions();
-					if ($options != false) {
-						$enabled = (bool)$options[DPF_DEFAULT_ENABLED_NAME];
-						if (!$enabled) {
-							echo '<div id="message" class="error">' . DPF_PLUGIN_NAME . ' ' . __('is currently disabled.', dpf_get_local()) . '</div>';
+				if (!empty($_GET['page'])) {
+					if ($_GET['page'] == dpf_get_slug()) { // we are on this plugin's settings page
+						$options = dpf_getpluginoptions();
+						if (!empty($options)) {
+							$enabled = (bool)$options[DPF_DEFAULT_ENABLED_NAME];
+							if (!$enabled) {
+								echo '<div id="message" class="error">' . DPF_PLUGIN_NAME . ' ' . __('is currently disabled.', dpf_get_local()) . '</div>';
+							}
 						}
 					}
 				}
@@ -148,8 +157,10 @@ License: GPLv2 or later
 		global $pagenow;
 		if (current_user_can(DPF_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if ($_GET['page'] == dpf_get_slug()) { // we are on this plugin's settings page
-					dpf_admin_styles();
+				if (!empty($_GET['page'])) {
+					if ($_GET['page'] == dpf_get_slug()) { // we are on this plugin's settings page
+						dpf_admin_styles();
+					}
 				}
 			}
 		}
