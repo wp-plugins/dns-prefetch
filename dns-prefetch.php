@@ -3,7 +3,7 @@
 Plugin Name: DNS Prefetch
 Plugin URI: http://www.jimmyscode.com/wordpress/dns-prefetch/
 Description: Add DNS prefetching meta tags to your site.
-Version: 0.0.6
+Version: 0.0.7
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	define('DPF_PLUGIN_NAME', 'DNS Prefetch');
 	// plugin constants
-	define('DPF_VERSION', '0.0.6');
+	define('DPF_VERSION', '0.0.7');
 	define('DPF_SLUG', 'dns-prefetch');
 	define('DPF_LOCAL', 'dpf');
 	define('DPF_OPTION', 'dpf');
@@ -45,8 +45,9 @@ License: GPLv2 or later
 	}
 	// validation function
 	function dpf_validation($input) {
-		// sanitize textarea
+		// validate all form fields
 		if (!empty($input)) {
+			$input[DPF_DEFAULT_ENABLED_NAME] = (bool)$input[DPF_DEFAULT_ENABLED_NAME];
 			$input[DPF_DEFAULT_TEXT_NAME] = wp_kses_post($input[DPF_DEFAULT_TEXT_NAME]);
 		}
 		return $input;
@@ -84,13 +85,14 @@ License: GPLv2 or later
 					<h3 id="settings"><img src="<?php echo plugins_url(dpf_get_path() . '/images/settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', dpf_get_local()); ?></h3>
 					<table class="form-table" id="theme-options-wrap">
 						<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', dpf_get_local()); ?>" for="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', dpf_get_local()); ?></label></strong></th>
-							<td><input type="checkbox" id="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[DPF_DEFAULT_ENABLED_NAME]); ?> /></td>
+							<td><input type="checkbox" id="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', dpf_checkifset(DPF_DEFAULT_ENABLED_NAME, DPF_DEFAULT_ENABLED, $options)); ?> /></td>
 						</tr>
-						<tr valign="top"><td colspan="2"><?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', dpf_get_local()); ?></td></tr>
+						<?php dpf_explanationrow(__('Is plugin enabled? Uncheck this to turn it off temporarily.', dpf_get_local())); ?>
+						<?php dpf_getlinebreak(); ?>
 						<tr valign="top"><th scope="row"><strong><label title="<?php _e('Enter URLs to be prefetched', dpf_get_local()); ?>" for="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_TEXT_NAME; ?>]"><?php _e('Enter URLs to be prefetched', dpf_get_local()); ?></label></strong></th>
-							<td><textarea rows="12" cols="75" id="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_TEXT_NAME; ?>]" name="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_TEXT_NAME; ?>]"><?php echo $options[DPF_DEFAULT_TEXT_NAME]; ?></textarea></td>
+							<td><textarea rows="12" cols="75" id="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_TEXT_NAME; ?>]" name="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_TEXT_NAME; ?>]"><?php echo dpf_checkifset(DPF_DEFAULT_TEXT_NAME, DPF_DEFAULT_TEXT, $options); ?></textarea></td>
 						</tr>
-						<tr valign="top"><td colspan="2"><?php _e('Type the URLs you want to be prefetched by visitors\' browsers. <strong>One URL per line.</strong> Include prefix (such as <strong>http://</strong>) <br /><strong>These domains will be prefetched in addition to the domains already linked on your pages.</strong>', dpf_get_local()); ?></td></tr>
+						<?php dpf_explanationrow(__('Type the URLs you want to be prefetched by visitors\' browsers. <strong>One URL per line.</strong> Include prefix (such as <strong>http://</strong>) <br /><strong>These domains will be prefetched in addition to the domains already linked on your pages.</strong>', dpf_get_local())); ?>
 					</table>
 					<?php submit_button(); ?>
 				<?php } else { ?>
@@ -248,5 +250,14 @@ License: GPLv2 or later
 		$output .= '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Support this plugin" width="92" height="26" /></a>';
 		$output .= '<br /><br />';
 		return $output;		
+	}
+	function dpf_checkifset($optionname, $optiondefault, $optionsarr) {
+		return (!empty($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
+	}
+	function dpf_getlinebreak() {
+	  echo '<tr valign="top"><td colspan="2"></td></tr>';
+	}
+	function dpf_explanationrow($msg = '') {
+		echo '<tr valign="top"><td></td><td><em>' . $msg . '</em></td></tr>';
 	}
 ?>
