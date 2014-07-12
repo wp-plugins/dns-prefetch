@@ -8,9 +8,9 @@ Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
-
-	define('DPF_PLUGIN_NAME', 'DNS Prefetch');
+if (!defined('DPF_PLUGIN_NAME')) {
 	// plugin constants
+	define('DPF_PLUGIN_NAME', 'DNS Prefetch');
 	define('DPF_VERSION', '0.0.7');
 	define('DPF_SLUG', 'dns-prefetch');
 	define('DPF_LOCAL', 'dpf');
@@ -24,7 +24,7 @@ License: GPLv2 or later
 	/* option array member names */
 	define('DPF_DEFAULT_ENABLED_NAME', 'enabled');
 	define('DPF_DEFAULT_TEXT_NAME', 'domainstoadd');
-	
+}
 	// oh no you don't
 	if (!defined('ABSPATH')) {
 		wp_die(__('Do not access this file directly.', dpf_get_local()));
@@ -67,7 +67,7 @@ License: GPLv2 or later
 		}
 		?>
 		<div class="wrap">
-			<h2 id="plugintitle"><img src="<?php echo plugins_url(dpf_get_path() . '/images/globe.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo DPF_PLUGIN_NAME; _e(' by ', dpf_get_local()); ?><a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
+			<h2 id="plugintitle"><img src="<?php echo dpf_getimagefilename('globe.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo DPF_PLUGIN_NAME; _e(' by ', dpf_get_local()); ?><a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
 			<div><?php _e('You are running plugin version', dpf_get_local()); ?> <strong><?php echo DPF_VERSION; ?></strong>.</div>
 
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
@@ -82,7 +82,7 @@ License: GPLv2 or later
 				<?php $options = dpf_getpluginoptions(); ?>
 				<?php update_option(dpf_get_option(), $options); ?>
 				<?php if ($active_tab == 'settings') { ?>
-					<h3 id="settings"><img src="<?php echo plugins_url(dpf_get_path() . '/images/settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', dpf_get_local()); ?></h3>
+					<h3 id="settings"><img src="<?php echo dpf_getimagefilename('settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', dpf_get_local()); ?></h3>
 					<table class="form-table" id="theme-options-wrap">
 						<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', dpf_get_local()); ?>" for="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', dpf_get_local()); ?></label></strong></th>
 							<td><input type="checkbox" id="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo dpf_get_option(); ?>[<?php echo DPF_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', dpf_checkifset(DPF_DEFAULT_ENABLED_NAME, DPF_DEFAULT_ENABLED, $options)); ?> /></td>
@@ -96,7 +96,7 @@ License: GPLv2 or later
 					</table>
 					<?php submit_button(); ?>
 				<?php } else { ?>
-					<h3 id="support"><img src="<?php echo plugins_url(dpf_get_path() . '/images/support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', dpf_get_local()); ?></h3>
+					<h3 id="support"><img src="<?php echo dpf_getimagefilename('support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', dpf_get_local()); ?></h3>
 					<div class="support">
 						<?php echo dpf_getsupportinfo(dpf_get_slug(), dpf_get_local()); ?>
 						<small><?php _e('Disclaimer: This plugin is not affiliated with or endorsed by Mozilla.', dpf_get_local()); ?></small>
@@ -252,12 +252,15 @@ License: GPLv2 or later
 		return $output;		
 	}
 	function dpf_checkifset($optionname, $optiondefault, $optionsarr) {
-		return (!empty($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
+		return (isset($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
 	}
 	function dpf_getlinebreak() {
 	  echo '<tr valign="top"><td colspan="2"></td></tr>';
 	}
 	function dpf_explanationrow($msg = '') {
 		echo '<tr valign="top"><td></td><td><em>' . $msg . '</em></td></tr>';
+	}
+	function dpf_getimagefilename($fname = '') {
+		return plugins_url(dpf_get_path() . '/images/' . $fname);
 	}
 ?>
