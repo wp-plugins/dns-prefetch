@@ -56,6 +56,7 @@ Add this to your functions.php:
 
 = 0.0.8 =
 - minor code optimizations
+- fixed validation issue
 
 = 0.0.7 =
 - permanent fix for Undefined Index issue
@@ -85,7 +86,7 @@ Add this to your functions.php:
 == Upgrade Notice ==
 
 = 0.0.8 =
-- minor code optimizations
+- minor code optimizations; fixed validation issue
 
 = 0.0.7 =
 - permanent fix for Undefined Index issue; admin CSS and page updates

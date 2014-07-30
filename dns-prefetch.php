@@ -3,7 +3,7 @@
 Plugin Name: DNS Prefetch
 Plugin URI: http://www.jimmyscode.com/wordpress/dns-prefetch/
 Description: Add DNS prefetching meta tags to your site.
-Version: 0.0.7
+Version: 0.0.8
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 if (!defined('DPF_PLUGIN_NAME')) {
 	// plugin constants
 	define('DPF_PLUGIN_NAME', 'DNS Prefetch');
-	define('DPF_VERSION', '0.0.7');
+	define('DPF_VERSION', '0.0.8');
 	define('DPF_SLUG', 'dns-prefetch');
 	define('DPF_LOCAL', 'dpf');
 	define('DPF_OPTION', 'dpf');
@@ -71,7 +71,7 @@ if (!defined('DPF_PLUGIN_NAME')) {
 			<div><?php _e('You are running plugin version', dpf_get_local()); ?> <strong><?php echo DPF_VERSION; ?></strong>.</div>
 
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
-			<?php $active_tab = (!empty($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
+			<?php $active_tab = (isset($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
 			<h2 class="nav-tab-wrapper">
 			  <a href="?page=<?php echo dpf_get_slug(); ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', dpf_get_local()); ?></a>
 				<a href="?page=<?php echo dpf_get_slug(); ?>&tab=support" class="nav-tab <?php echo $active_tab == 'support' ? 'nav-tab-active' : ''; ?>"><?php _e('Support', dpf_get_local()); ?></a>
@@ -139,7 +139,7 @@ if (!defined('DPF_PLUGIN_NAME')) {
 		global $pagenow;
 		if (current_user_can(DPF_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if (!empty($_GET['page'])) {
+				if (isset($_GET['page'])) {
 					if ($_GET['page'] == dpf_get_slug()) { // we are on this plugin's settings page
 						$options = dpf_getpluginoptions();
 						if (!empty($options)) {
@@ -159,7 +159,7 @@ if (!defined('DPF_PLUGIN_NAME')) {
 		global $pagenow;
 		if (current_user_can(DPF_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') { // we are on Settings menu
-				if (!empty($_GET['page'])) {
+				if (isset($_GET['page'])) {
 					if ($_GET['page'] == dpf_get_slug()) { // we are on this plugin's settings page
 						dpf_admin_styles();
 					}
